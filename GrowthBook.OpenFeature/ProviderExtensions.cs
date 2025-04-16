@@ -11,14 +11,13 @@ public static class ProviderExtensions
     /// Sets the GrowthBook provider as the default provider for OpenFeature
     /// </summary>
     /// <param name="api">The OpenFeature API instance</param>
-    /// <param name="apiKey">GrowthBook API key</param>
     /// <param name="clientKey">GrowthBook client key</param>
     /// <param name="hostUrl">GrowthBook host URL</param>
     /// <param name="decryptionKey">GrowthBook encryption key (optional)</param>
     /// <returns>A task representing the asynchronous operation</returns>
     public static Task UseGrowthBookProvider(this global::OpenFeature.Api api, string apiKey, string clientKey, string hostUrl, string? decryptionKey = null)
     {
-        var provider = new GrowthBookProvider(apiKey, clientKey, hostUrl, decryptionKey);
+        var provider = new GrowthBookProvider(clientKey, hostUrl, decryptionKey);
         return api.SetProviderAsync(provider);
     }
 
@@ -27,14 +26,13 @@ public static class ProviderExtensions
     /// </summary>
     /// <param name="api">The OpenFeature API instance</param>
     /// <param name="domain">The domain name</param>
-    /// <param name="apiKey">GrowthBook API key</param>
     /// <param name="clientKey">GrowthBook client key</param>
     /// <param name="hostUrl">GrowthBook host URL</param>
     /// <param name="decryptionKey">GrowthBook encryption key (optional)</param>
     /// <returns>A task representing the asynchronous operation</returns>
     public static Task UseGrowthBookProvider(this global::OpenFeature.Api api, string domain, string apiKey, string clientKey, string hostUrl, string? decryptionKey = null)
     {
-        var provider = new GrowthBookProvider(apiKey, clientKey, hostUrl, decryptionKey);
+        var provider = new GrowthBookProvider(clientKey, hostUrl, decryptionKey);
         return api.SetProviderAsync(domain, provider);
     }
 

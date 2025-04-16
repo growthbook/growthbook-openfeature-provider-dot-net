@@ -14,7 +14,6 @@ namespace GrowthBook.OpenFeature;
 public class GrowthBookProvider : FeatureProvider
 {
     private readonly global::GrowthBook.GrowthBook _growthBook;
-    private readonly string? _apiKey;
     private readonly string? _clientKey;
     private readonly string? _hostUrl;
     private readonly string? _decryptionKey;
@@ -22,25 +21,21 @@ public class GrowthBookProvider : FeatureProvider
     /// <summary>
     /// Initializes a new instance of the GrowthBookProvider class
     /// </summary>
-    /// <param name="apiKey">GrowthBook API key</param>
     /// <param name="clientKey">GrowthBook client key</param>
-    /// <param name="hostUrl">GrowthBook host URL</param>
+    /// <param name="apiHostUrl">GrowthBook host URL</param>
     /// <param name="decryptionKey">GrowthBook encryption key (optional)</param>
-    public GrowthBookProvider(string apiKey, string clientKey, string hostUrl, string? decryptionKey = null)
+    public GrowthBookProvider(string clientKey, string apiHostUrl, string? decryptionKey = null)
     {
-        _apiKey = apiKey;
         _clientKey = clientKey;
-        _hostUrl = hostUrl;
+        _hostUrl = apiHostUrl;
         _decryptionKey = decryptionKey;
 
         var context = new global::GrowthBook.Context
         {
-            ApiHost = hostUrl,
-            ClientKey = clientKey
+            ApiHost = apiHostUrl,
+            ClientKey = clientKey,
+            DecryptionKey = decryptionKey
         };
-
-        // The C# GrowthBook SDK might not support encryption key
-        // If needed, this would be implemented according to the SDK's capabilities
 
         _growthBook = new global::GrowthBook.GrowthBook(context);
     }
@@ -77,7 +72,7 @@ public class GrowthBookProvider : FeatureProvider
         // Add targeting key as userId if available
         if (!string.IsNullOrEmpty(evaluationContext.TargetingKey))
         {
-            attributes.Add("userId", evaluationContext.TargetingKey);
+            attributes.Add("id", evaluationContext.TargetingKey);
         }
         
         // Map all other attributes from the evaluation context

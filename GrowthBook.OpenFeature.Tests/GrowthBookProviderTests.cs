@@ -18,7 +18,7 @@ public class GrowthBookProviderTests
     public void Constructor_WithApiCredentials_InitializesProvider()
     {
         // Act
-        var provider = new GrowthBookProvider("api-key", "client-key", "https://host.com", "decrypt-key");
+        var provider = new GrowthBookProvider("client-key", "https://host.com", "decrypt-key");
         
         // Assert
         Assert.NotNull(provider);
@@ -152,7 +152,7 @@ public class GrowthBookProviderTests
         
         // Assert
         Assert.NotNull(growthBook.Attributes);
-        Assert.Equal("user-123", growthBook.Attributes["userId"]?.ToString());
+        Assert.Equal("user-123", growthBook.Attributes["id"]?.ToString());
     }
     
     #endregion

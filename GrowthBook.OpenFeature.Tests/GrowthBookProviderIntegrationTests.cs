@@ -148,7 +148,7 @@ public class GrowthBookProviderIntegrationTests
         // Assert - Check that the GrowthBook instance has the expected attributes
         // In a real integration test, you might verify this by checking that the correct rule was evaluated
         Assert.NotNull(growthBook.Attributes);
-        Assert.Equal("user-123", growthBook.Attributes["userId"]?.ToString());
+        Assert.Equal("user-123", growthBook.Attributes["id"]?.ToString());
     }
     
     [Fact]
