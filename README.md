@@ -2,7 +2,14 @@
 
 [![.NET CI](https://github.com/growthbook/growthbook-openfeature-provider-dot-net/actions/workflows/ci.yml/badge.svg)](https://github.com/growthbook/growthbook-openfeature-provider-dot-net/actions/workflows/ci.yml)
 
-This is the official GrowthBook provider for the [OpenFeature .NET SDK](https://github.com/open-feature/dotnet-sdk).
+This is the official [GrowthBook](https://www.growthbook.io/) provider for the [OpenFeature .NET SDK](https://github.com/open-feature/dotnet-sdk). It allows you to leverage GrowthBook as your feature flag system through the standardized OpenFeature API.
+
+## Quick Start
+
+1. Install the package
+2. Create a GrowthBook provider
+3. Register with OpenFeature
+4. Start evaluating feature flags
 
 ## Requirements
 
@@ -15,7 +22,7 @@ This is the official GrowthBook provider for the [OpenFeature .NET SDK](https://
 dotnet add package GrowthBook.OpenFeature
 ```
 
-## Usage
+## Basic Usage
 
 ```csharp
 using GrowthBook.OpenFeature;
@@ -24,21 +31,21 @@ using OpenFeature.Model;
 
 // Initialize the GrowthBook provider
 var provider = new GrowthBookProvider(
-    apiKey: "YOUR_API_KEY",
-    clientKey: "YOUR_CLIENT_KEY",
-    hostUrl: "https://cdn.growthbook.io"
+    clientKey: "sdk-abc123",
+    apiHostUrl: "https://cdn.growthbook.io"
 );
 
 // Register the provider with OpenFeature
 Api.Instance.SetProvider(provider);
 
-// Create an evaluation context
+// Create an evaluation context with targeting information
 var context = new EvaluationContext(
     targetingKey: "user-123",
     new Dictionary<string, Value>
     {
         { "email", new Value("user@example.com") },
-        { "country", new Value("USA") }
+        { "country", new Value("USA") },
+        { "premium", new Value(true) }
     }
 );
 
@@ -46,32 +53,57 @@ var context = new EvaluationContext(
 var client = Api.Instance.GetClient();
 
 // Evaluate a feature flag
-bool isEnabled = await client.GetBooleanValue("feature-flag-key", false, context);
+bool isEnabled = await client.GetBooleanValue("new-dashboard", false, context);
 
-// Use the feature flag
+// Use the feature flag in your application logic
 if (isEnabled)
 {
-    // Feature is enabled
+    // Show the new dashboard
 }
 else
 {
-    // Feature is disabled
+    // Show the old dashboard
 }
+```
+
+## Available Flag Types
+
+This provider supports all OpenFeature evaluation types:
+
+```csharp
+// Boolean flags
+bool enabled = await client.GetBooleanValue("feature-enabled", false, context);
+
+// String flags
+string variant = await client.GetStringValue("button-color", "blue", context);
+
+// Integer flags
+int limit = await client.GetIntegerValue("api-request-limit", 100, context);
+
+// Double flags
+double price = await client.GetDoubleValue("subscription-price", 9.99, context);
+
+// Object flags
+Value config = await client.GetObjectValue("feature-config", new Value(new Dictionary<string, Value>()), context);
 ```
 
 ## Advanced Usage
 
-You can also use an existing GrowthBook instance:
+### Using an Existing GrowthBook Instance
+
+If you already have a GrowthBook instance configured:
 
 ```csharp
 // Create GrowthBook context
 var gbContext = new GrowthBook.Context
 {
     ApiHost = "https://cdn.growthbook.io",
-    ClientKey = "YOUR_CLIENT_KEY"
+    ClientKey = "sdk-abc123",
+    Enabled = true,
+    // Add additional configuration as needed
 };
 
-// Create a GrowthBook instance
+// Create and configure a GrowthBook instance
 var growthBook = new GrowthBook.GrowthBook(gbContext);
 
 // Initialize the GrowthBook provider with the existing instance
@@ -80,6 +112,55 @@ var provider = new GrowthBookProvider(growthBook);
 // Register the provider with OpenFeature
 Api.Instance.SetProvider(provider);
 ```
+
+### Handling Context Changes
+
+You can update the evaluation context at any time:
+
+```csharp
+// Create new context when user logs in
+var userContext = new EvaluationContext(
+    targetingKey: "user-456", 
+    new Dictionary<string, Value>
+    {
+        { "email", new Value("new-user@example.com") },
+        { "subscriptionTier", new Value("premium") }
+    }
+);
+
+// Update the client with the new context
+client.SetEvaluationContext(userContext);
+
+// All subsequent evaluations will use the new context
+var result = await client.GetBooleanValue("premium-feature", false);
+```
+
+## Project Structure
+
+The solution consists of:
+
+- **GrowthBook.OpenFeature**: The main library implementing the OpenFeature provider
+- **GrowthBook.OpenFeature.Tests**: Unit tests for the provider
+
+## Troubleshooting
+
+### Common Issues
+
+1. **Feature flag not found**: Ensure your `clientKey` is correct and that the flag exists in your GrowthBook project
+2. **Incorrect targeting**: Check that your evaluation context contains the expected targeting attributes
+3. **No connection to GrowthBook**: Verify your `apiHostUrl` is correct and network connectivity is available
+
+### Debugging
+
+Enable verbose logging to see detailed evaluation information:
+
+```csharp
+OpenFeature.Api.Instance.SetLoggerFactory(new ConsoleLoggerFactory(LogLevel.Debug));
+```
+
+## Contributing
+
+Contributions are welcome! See [CONTRIBUTING.md](CONTRIBUTING.md) for details.
 
 ## License
 
