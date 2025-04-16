@@ -1,0 +1,27 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <Version>0.1.0</Version>
+    <Authors>GrowthBook</Authors>
+    <Description>GrowthBook provider for OpenFeature .NET SDK</Description>
+    <PackageTags>feature-flags;feature-toggles;growthbook;openfeature</PackageTags>
+    <PackageProjectUrl>https://github.com/growthbook/growthbook-openfeature-provider-dot-net</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/growthbook/growthbook-openfeature-provider-dot-net</RepositoryUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\README.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="growthbook-c-sharp" Version="1.1.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="OpenFeature" Version="2.4.0" />
+  </ItemGroup>
+
+</Project>
