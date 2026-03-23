@@ -1,10 +1,8 @@
 # GrowthBook OpenFeature Provider for .NET
 
-[![.NET CI](https://github.com/growthbook/growthbook-openfeature-provider-dot-net/actions/workflows/ci.yml/badge.svg)](https://github.com/growthbook/growthbook-openfeature-provider-dot-net/actions/workflows/ci.yml)
+[![.NET CI](https://github.com/growthbook/growthbook-openfeature-provider-dot-net/actions/workflows/ci.yml/badge.svg)](https://github.com/growthbook/growthbook-openfeature-provider-dot-net/actions/workflows/ci.yml) [![nuget badge for growthbook](https://img.shields.io/nuget/v/GrowthBook.OpenFeature?style=flat-square)](https://www.nuget.org/packages/GrowthBook.OpenFeature)
 
 This is the official [GrowthBook](https://www.growthbook.io/) provider for the [OpenFeature .NET SDK](https://github.com/open-feature/dotnet-sdk). 
-
-[![nuget badge for growthbook](https://img.shields.io/nuget/v/GrowthBook.OpenFeature?style=flat-square)](https://www.nuget.org/packages/GrowthBook.OpenFeature)
 
 It allows you to leverage GrowthBook as your feature flag system through the standardized OpenFeature API.
 
